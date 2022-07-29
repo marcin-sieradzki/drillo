@@ -1,9 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import GameBoard from "./components/GameBoard.vue";
+</script>
 
 <template>
-	<div>
-		<h1 class="text-6xl">Drillo</h1>
-	</div>
+	<GameBoard></GameBoard>
 </template>
 
-<style scoped></style>
+<style>
+html,
+body,
+#app {
+	height: 100vh;
+	width: 100vw;
+}
+</style>
