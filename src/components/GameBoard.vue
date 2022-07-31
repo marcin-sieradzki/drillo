@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useBlocksStore } from "@/stores/blocksStore";
+import { useBlocksStore } from "../stores/blocksStore";
 import { onMounted, onUnmounted } from "vue";
 import { usePlayerStore, Direction } from "../stores/playerStore";
 
@@ -62,7 +62,7 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
 				<template v-for="y in boardDimentions[1]">
 					<div
 						class="h-14 w-14"
-						:style="{ background: blocks.get(`${x}|${y}`).color }"
+						:style="{ background: blocks?.get(`${x}|${y}`)?.color }"
 					></div>
 				</template>
 			</div>
