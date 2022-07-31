@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useBlocksStore } from "../stores/blocksStore";
+import { useBlocksStore, BlockTypes } from "../stores/blocksStore";
 import { onMounted, onUnmounted } from "vue";
 import { usePlayerStore, Direction } from "../stores/playerStore";
 
@@ -61,9 +61,15 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
 			<div v-for="x in boardDimentions[0]">
 				<template v-for="y in boardDimentions[1]">
 					<div
-						class="h-14 w-14"
+						class="h-14 w-14 text-white font-bold flex items-center justify-center"
 						:style="{ background: blocks?.get(`${x}|${y}`)?.color }"
-					></div>
+					>
+						{{
+							blocks?.get(`${x}|${y}`)?.type === BlockTypes.Player
+								? "You"
+								: null
+						}}
+					</div>
 				</template>
 			</div>
 		</div>
