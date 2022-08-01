@@ -17,6 +17,7 @@ export const usePlayerStore = defineStore("playerStore", () => {
 	const blocksStoreInstance = useBlocksStore();
 	const currentPosition = ref("");
 	const lastDugBlock: Ref<Block | null> = ref(null);
+	const durability = ref(100);
 	const dugBlocks: any = ref({
 		[BlockTypes.Dirt]: 0,
 		[BlockTypes.Diamond]: 0,
@@ -38,11 +39,18 @@ export const usePlayerStore = defineStore("playerStore", () => {
 			return;
 		}
 
-		lastDugBlock.value = blocksStoreInstance.blocks.get(newPosition) as Block;
+		const dugBlock = blocksStoreInstance.blocks.get(newPosition) as Block;
+		if (durability.value <= 0 && dugBlock.type !== BlockTypes.Void) {
+			return;
+		}
+
+		lastDugBlock.value = dugBlock;
 
 		replaceBlock(currentPosition.value, BlockTypes.Void);
 		replaceBlock(newPosition, BlockTypes.Player);
 		currentPosition.value = newPosition;
+
+		durability.value -= dugBlock.durability || 0;
 	};
 
 	const generateNewPosition = (
@@ -71,7 +79,19 @@ export const usePlayerStore = defineStore("playerStore", () => {
 		blocksStoreInstance.setBlock(position, {
 			color: type === BlockTypes.Player ? "black" : "gray",
 			type,
+			durability: 0,
 		});
+	};
+
+	const repairDrill = (): void => {
+		if (
+			dugBlocks.value[BlockTypes.Dirt] >= 5 &&
+			dugBlocks.value[BlockTypes.Gold] >= 1
+		) {
+			dugBlocks.value[BlockTypes.Dirt] -= 5;
+			dugBlocks.value[BlockTypes.Gold] -= 1;
+			durability.value = 100;
+		}
 	};
 
 	watch(lastDugBlock, (block) => {
@@ -85,5 +105,7 @@ export const usePlayerStore = defineStore("playerStore", () => {
 		move,
 		dugBlocks,
 		setInitialPosition,
+		durability,
+		repairDrill,
 	};
 });

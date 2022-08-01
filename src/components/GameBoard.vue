@@ -8,7 +8,7 @@ const blocksStoreInstance = useBlocksStore();
 const playerStoreInstance = usePlayerStore();
 const { blocks } = storeToRefs(blocksStoreInstance);
 const { generateBlocksGrid } = blocksStoreInstance;
-const { dugBlocks } = storeToRefs(playerStoreInstance);
+const { dugBlocks, durability } = storeToRefs(playerStoreInstance);
 const boardDimentions = [14, 13];
 
 generateBlocksGrid(boardDimentions);
@@ -48,6 +48,17 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
 	<div
 		class="flex items-center justify-center w-full h-full flex-col gap-3 bg-gradient-to-br from-yellow-200 to-yellow-400"
 	>
+		<h2>Drill durability: {{ durability }}</h2>
+		<span v-if="durability <= 0"
+			>The drill is broken! Press the button below to repair.</span
+		>
+		<button
+			@click="playerStoreInstance.repairDrill()"
+			v-if="durability <= 0"
+			class="bg-blue-400 p-2 rounded-md font-bold"
+		>
+			Repair: 5 dirt | 1 gold
+		</button>
 		<div class="flex gap-3">
 			<article
 				class="flex flex-col font-bold"

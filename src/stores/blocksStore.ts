@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export interface Block {
 	type: string;
 	color: string;
+	durability: number;
 }
 
 export enum BlockTypes {
@@ -20,15 +21,31 @@ interface BlockType {
 	type: string;
 	propability: number;
 	color: string;
+	durability: number;
 }
 
 export const useBlocksStore = defineStore("blocksStore", () => {
 	const blockTypes: BlockType[] = [
-		{ type: BlockTypes.Dirt, propability: 0.6, color: "brown" },
-		{ type: BlockTypes.Iron, propability: 0.15, color: "silver" },
-		{ type: BlockTypes.Gold, propability: 0.08, color: "gold" },
-		{ type: BlockTypes.Diamond, propability: 0.03, color: "lightblue" },
-		{ type: BlockTypes.RedStone, propability: 0.1, color: "red" },
+		{ type: BlockTypes.Dirt, propability: 0.6, color: "brown", durability: 1 },
+		{
+			type: BlockTypes.Iron,
+			propability: 0.15,
+			color: "silver",
+			durability: 5,
+		},
+		{ type: BlockTypes.Gold, propability: 0.08, color: "gold", durability: 10 },
+		{
+			type: BlockTypes.Diamond,
+			propability: 0.03,
+			color: "lightblue",
+			durability: 15,
+		},
+		{
+			type: BlockTypes.RedStone,
+			propability: 0.1,
+			color: "red",
+			durability: 7,
+		},
 	];
 	const blocks = ref<Map<string, Block>>(new Map());
 	const setBlock = (coordinates: string, block: Block) => {
@@ -39,6 +56,7 @@ export const useBlocksStore = defineStore("blocksStore", () => {
 		return {
 			type: generatedType.type,
 			color: generatedType.color,
+			durability: generatedType.durability,
 		};
 	};
 
