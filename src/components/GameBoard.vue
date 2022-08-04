@@ -8,7 +8,6 @@ const blocksStoreInstance = useBlocksStore();
 const playerStoreInstance = usePlayerStore();
 const { blocks } = storeToRefs(blocksStoreInstance);
 const { generateBlocksGrid } = blocksStoreInstance;
-const { dugBlocks, durability } = storeToRefs(playerStoreInstance);
 const boardDimentions = [14, 13];
 
 generateBlocksGrid(boardDimentions);
@@ -45,29 +44,9 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
 </script>
 
 <template>
-	<div
-		class="flex items-center justify-center w-full h-full flex-col gap-3 bg-gradient-to-br from-yellow-200 to-yellow-400"
+	<section
+		class="flex items-center justify-center w-full h-full flex-col gap-3"
 	>
-		<h2>Drill durability: {{ durability }}</h2>
-		<span v-if="durability <= 0"
-			>The drill is broken! Press the button below to repair.</span
-		>
-		<button
-			@click="playerStoreInstance.repairDrill()"
-			v-if="durability <= 0"
-			class="bg-blue-400 p-2 rounded-md font-bold"
-		>
-			Repair: 5 dirt | 1 gold
-		</button>
-		<div class="flex gap-3">
-			<article
-				class="flex flex-col font-bold"
-				v-for="(name, value) in dugBlocks"
-			>
-				<span>{{ value }}</span>
-				<span class="text-center">{{ name }}</span>
-			</article>
-		</div>
 		<div class="main-grid grid w-fit">
 			<div v-for="x in boardDimentions[0]">
 				<template v-for="y in boardDimentions[1]">
@@ -84,7 +63,11 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
 				</template>
 			</div>
 		</div>
-	</div>
+	</section>
 </template>
 
-<style scoped></style>
+<style scoped>
+section {
+	background: url("../assets/images/mines.jpg");
+}
+</style>
